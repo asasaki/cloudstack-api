@@ -14,11 +14,12 @@ import httplib2
 import hashlib
 
 class Stack(object):
-    def __init__(self, http, host, api_key, secret_key):
+    def __init__(self, http, host, api_key, secret_key, http_method):
         self.http = http
         self.host = host
         self.api_key = api_key
         self.secret_key = secret_key
+        self.http_method = http_method if http_method in ('GET', 'POST') else 'GET'
 
     def signature(self, command, query):
         query['command'] = command
@@ -66,3 +67,9 @@ class Stack(object):
 
     def get(self, command, query=None):
         return self.connect('GET',command,query)
+
+    def post(self, command, query=None):
+        return self.connect('POST', command,query)
+
+    def request(self, command, query=None):
+        return self.connect(self.http_method, command, query)

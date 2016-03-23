@@ -50,12 +50,16 @@ class ShellCommand(object):
 
         csv_fields = d.pop("csv")
         no_headers = d.pop("noheaders")
+        http_method = d.pop("method")
 
         for k,v in d.items():
             if v is None:
                 del(d[k])
 
-        retval = client.connect().get(command.__name__,d)
+        if http_method:
+            retval = client.connect().connect(http_method, command.__name__, d)
+        else:
+            retval = client.connect().request(command.__name__, d)
 
         return retval, fields, xml, csv_fields, no_headers
 
@@ -108,6 +112,11 @@ class IdcfShell(object):
                                   nargs="?", const="*"))
                 retval.append(arg("--noheaders",help="suppress csv header",
                                   action="store_true"))
+
+                retval.append(arg("-m", "--method", help="http method",
+                                  type=str.upper,
+                                  choices=["GET", "POST"]))
+
                 return retval
             setattr(command,"options",options)
             commands.append(command)

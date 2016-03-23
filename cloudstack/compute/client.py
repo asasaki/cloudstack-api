@@ -16,7 +16,7 @@ logging.basicConfig(format="%(asctime)s %(module)s[%(lineno)d] [%(levelname)s]: 
                     #filename = "log.txt",
                     level=logging.INFO)
 
-def connect(host=None,api_key=None,secret_key=None,debug=False):
+def connect(host=None,api_key=None,secret_key=None,http_method=None,debug=False):
     if debug:
         httplib2.debuglevel = 1
         logging.getLogger().setLevel(logging.DEBUG)
@@ -41,6 +41,14 @@ def connect(host=None,api_key=None,secret_key=None,debug=False):
             secret_key = os.environ.get('IDCF_COMPUTE_SECRET_KEY')
             if not secret_key:
                 secret_key = safe_option(config,"account","secret_key")
+        if not http_method:
+            http_method = os.environ.get("IDCF_COMPUTE_HTTP_METHOD")
+            if not http_method:
+                try:
+                    http_method = config.get("account", "http_method")
+                    http_method = http_method.upper()
+                except:
+                    http_method = "GET"
 
     except ConfigParser.NoSectionError, e:
         print >> sys.stderr, e.message
@@ -55,4 +63,4 @@ def connect(host=None,api_key=None,secret_key=None,debug=False):
     except Exception, e:
         print >> sys.stderr, e
         sys.exit(1)
-    return Stack(http,host,api_key,secret_key)
+    return Stack(http,host,api_key,secret_key,http_method)
