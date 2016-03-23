@@ -7,7 +7,7 @@ VERSION = '0.10.2'
 
 setup(name='cloudstack.compute',
       version=VERSION,
-      packages=['cloudstack','cloudstack.compute'],
+      packages=['cloudstack', 'cloudstack.compute'],
       include_package_data=True,
       install_requires=['setuptools',
                         'httplib2',
@@ -18,8 +18,8 @@ setup(name='cloudstack.compute',
                         'lxml',
                         ],
       entry_points={
-        'console_scripts': [
-            'cloudstack-api = cloudstack.compute.shell:main'
-            ]
-        }
+          'console_scripts': [
+              'cloudstack-api = cloudstack.compute.shell:main'
+          ]
+      }
       )

@@ -4,6 +4,6 @@
 import sys
 import simplejson
 
-str =  sys.stdin.readline().strip()
+str = sys.stdin.readline().strip()
 json = simplejson.loads(str)
-print simplejson.dumps(json,sort_keys=True, indent=2)
+print simplejson.dumps(json, sort_keys=True, indent=2)
